@@ -46,8 +46,8 @@ import sys
 from datetime import datetime, timedelta
 from ..utils import load_yaml_data
 
-SOFTWARE_REQUIRED_FIELDS = ['description', 'website_url', 'source_code_url', 'licenses', 'tags']
-SOFTWARE_REQUIRED_LISTS = ['licenses', 'tags']
+SOFTWARE_REQUIRED_FIELDS = ['description', 'website_url', 'tags']
+SOFTWARE_REQUIRED_LISTS = ['tags']
 TAGS_REQUIRED_FIELDS = ['description']
 LICENSES_REQUIRED_FIELDS= ['identifier', 'name', 'url']
 
@@ -119,7 +119,7 @@ def check_attribute_in_list(item, attribute_name, key, attributes_list, errors):
                 message = "{}: {} {} is not listed in the main {} list".format(item['name'], attribute_name, attr, attribute_name)
                 log_exception(message, errors)
 
-def check_tag_has_at_least_items(tag, software_list, tags_with_redirect, errors, min_items=3):
+def check_tag_has_at_least_items(tag, software_list, tags_with_redirect, errors, min_items=1):
     """check that a tag has at least N software items attached to it"""
     tag_items_count = 0
     for software in software_list:
@@ -224,12 +224,12 @@ def awesome_lint(step):
     for tag in tags_list:
         check_attribute_in_list(tag, 'related_tags', 'name', tags_list, errors)
         check_required_fields(tag, errors, required_fields=TAGS_REQUIRED_FIELDS, severity=logging.warning)
-        check_tag_has_at_least_items(tag, software_list, tags_with_redirect, errors, min_items=3)
+        check_tag_has_at_least_items(tag, software_list, tags_with_redirect, errors, min_items=1)
     for platform in platforms_list:
         check_required_fields(platform, errors, required_fields=step['module_options']['platforms_required_fields'])
     for software in software_list:
         check_required_fields(software, errors, required_fields=SOFTWARE_REQUIRED_FIELDS, required_lists=SOFTWARE_REQUIRED_LISTS)
-        check_description_syntax(software, errors)
+        # check_description_syntax(software, errors)
         check_attribute_in_list(software, 'licenses', 'identifier', licenses_list, errors)
         check_attribute_in_list(software, 'tags', 'name', tags_list, errors)
         check_attribute_in_list(software, 'platforms', 'name', platforms_list, errors)

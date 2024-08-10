@@ -247,7 +247,7 @@ def render_markdown_list_item(software):
         markdown_demo = '[Demo]({})'.format(software['demo_url'])
     else:
         markdown_demo = ''
-    if not software['source_code_url'] == software['website_url']:
+    if 'source_code_url' in software and not software['source_code_url'] == software['website_url']:
         markdown_source_code = '[Source Code]({})'.format(software['source_code_url'])
     else:
         markdown_source_code = ''
@@ -265,6 +265,10 @@ def render_markdown_list_item(software):
     links = [link for link in links_list if link]
     markdown_links = ' ({})'.format(', '.join(links)) if links else ''
     # build markdown-formatted list item
+    if 'licenses' not in software:
+        software['licenses'] = []
+    if 'platforms' not in software:
+        software['platforms'] = []
     markdown_list_item = '- [{}]({}) {}- {}{} {} {}\n'.format(
         software['name'],
         software['website_url'],
@@ -311,7 +315,7 @@ def render_markdown_singlepage(step):
         markdown_header = open(step['module_options']['source_directory'] + '/' + step['module_options']['markdown_header'], 'r', encoding="utf-8").read()
     if 'markdown_footer' in step['module_options']:
         markdown_footer = open(step['module_options']['source_directory'] + '/' + step['module_options']['markdown_footer'], 'r', encoding="utf-8").read()
-    markdown_software_list = '## Software\n\n'
+    markdown_software_list = '## Entries\n\n'
     if ('exclude_licenses' in step['module_options']) and ('include_licenses' in step['module_options']):
         logging.error('module options exclude_licenses and include_licenses cannot be used together.')
         sys.exit(1)

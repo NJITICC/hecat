@@ -175,9 +175,9 @@ MARKDOWN_CSS="""
 MARKDOWN_INDEX_CONTENT_HEADER="""
 --------------------
 
-## Software
+## Entries
 
-This page lists all projects. Use links in the sidebar or click on {octicon}`tag;0.8em;octicon` tags to browse projects by category.
+This page lists all entries. Use links in the sidebar or click on {octicon}`tag;0.8em;octicon` tags to browse projects by category.
 """
 
 SOFTWARE_JINJA_MARKDOWN="""
@@ -188,14 +188,12 @@ SOFTWARE_JINJA_MARKDOWN="""
 {{ software['description'] }}
 
 <span class="external-link-box"><a class="external-link" href="{{ software['website_url'] }}">{% raw %}{octicon}{% endraw %}`globe;0.8em;octicon` Website</a></span>
-<span class="external-link-box"><a class="external-link" href="{% if software['source_code_url'] is defined %}{{ software['source_code_url'] }}{% else %}{{ software['website_url'] }}{% endif %}">{% raw %}{octicon}{% endraw %}`git-branch;0.8em;octicon` Source Code</a></span>
+{% if software['source_code_url'] is defined %}<span class="external-link-box"><a class="external-link" href="{{ software['source_code_url'] }}">{% raw %}{octicon}{% endraw %}`git-branch;0.8em;octicon` Source Code</a></span>{% endif %}
 {% if software['related_software_url'] is defined -%}<span class="external-link-box"><a class="external-link" href="{{ software['related_software_url'] }}">{% raw %}{octicon}{% endraw %}`package;0.8em;octicon` Clients</a></span>
 {% endif -%}
 {% if software['demo_url'] is defined -%}<span class="external-link-box"><a class="external-link" href="{{ software['demo_url'] }}">{% raw %}{octicon}{% endraw %}`play;0.8em;octicon` Demo</a></span>
 {% endif %}
 
-<span class="stars">★{% if software['stargazers_count'] is defined %}{{ software['stargazers_count'] }}{% else %}?{% endif %}</span>
-<span class="{{ date_css_class }}" title="Date of last update">{% raw %}{octicon}{% endraw %}`clock;0.8em;octicon` {% if software['updated_at'] is defined %}{{ software['updated_at'] }}{% else %}?{% endif %}</span>
 {% for platform in platforms %}<span class="platform"><a href="{{ platform['href'] }}">{% raw %}{octicon}{% endraw %}`package;0.8em;octicon` {{ platform['name'] }}</a> </span> {% endfor %}
 {% for license in software['licenses'] %}<span class="license-box"><a class="license-link" href="{{ licenses_relative_url }}">{% raw %}{octicon}{% endraw %}`law;0.8em;octicon` {{ license }}</a> </span> {% endfor %}
 {% if software['depends_3rdparty'] is defined and software['depends_3rdparty'] %}<span class="orangebox" title="Depends on a proprietary service outside the user's control">⚠ Anti-features</span>{% endif %}
@@ -259,8 +257,9 @@ def render_markdown_software(software, tags_relative_url='tags/', platforms_rela
     platforms_dicts_list = []
     for tag in software['tags']:
         tags_dicts_list.append({"name": tag, "href": tags_relative_url + urllib.parse.quote(to_kebab_case(tag)) + '.html'})
-    for platform in software['platforms']:
-        platforms_dicts_list.append({"name": platform, "href": platforms_relative_url + urllib.parse.quote(to_kebab_case(platform)) + '.html'})
+    if 'platforms' in software:
+        for platform in software['platforms']:
+            platforms_dicts_list.append({"name": platform, "href": platforms_relative_url + urllib.parse.quote(to_kebab_case(platform)) + '.html'})
     date_css_class = 'updated-at'
     if 'updated_at' in software:
         last_update_time = datetime.strptime(software['updated_at'], "%Y-%m-%d")
@@ -310,7 +309,7 @@ def render_item_page(step, item_type, item, software_list):
     for software in software_list:
         if any(license in software['licenses'] for license in step['module_options']['exclude_licenses']):
             logging.debug("%s has a license listed in exclude_licenses, skipping", software['name'])
-        elif any(value == item['name'] for value in software[match_key]):
+        elif match_key in software and any(value == item['name'] for value in software[match_key]):
             markdown_software_list = markdown_software_list + render_markdown_software(software,
                                                                                        tags_relative_url=tags_relative_url,
                                                                                        platforms_relative_url=platforms_relative_url,
@@ -388,7 +387,7 @@ def render_markdown_multipage(step):
         os.mkdir(step['module_options']['output_directory'] + '/_static')
     except FileExistsError:
         pass
-    output_css_file_name = step['module_options']['source_directory'] + '/_static/custom.css'
+    output_css_file_name = step['module_options']['source_directory'] + '/html/_static/custom.css'
     with open(output_css_file_name, 'w+', encoding="utf-8") as outfile:
         logging.info('writing output CSS file %s', output_css_file_name)
         outfile.write(MARKDOWN_CSS)
