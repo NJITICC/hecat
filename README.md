@@ -7,7 +7,11 @@ A generic automation tool around data stored as plaintext YAML files.
 This program uses YAML files to store data about various kind of items (bookmarks, software projects, ...) and apply various processing tasks.
 Functionality is implemented in separate modules.
 
-### Importers
+## Fork Information
+
+This repo was forked from [nodiscc/hecat](https://github.com/nodiscc/hecat). Processors and exporters have been modified to fit the needs of [awesome-nicc](https://github.com/njiticc/awesome-nicc).
+
+## Importers
 
 Import data from various input formats:
 
@@ -17,7 +21,7 @@ Import data from various input formats:
 [![](https://gitlab.com/nodiscc/toolbox/-/raw/master/DOC/SCREENSHOTS/tMAxhLw.png)](hecat/importers/markdown_awesome.py)
 
 
-### Processors
+## Processors
 
 Perform processing tasks on YAML data:
 
@@ -31,7 +35,7 @@ Perform processing tasks on YAML data:
 [![](https://gitlab.com/nodiscc/toolbox/-/raw/master/DOC/SCREENSHOTS/RtiDE91.png)](hecat/processors/download_media.py)
 [![](https://gitlab.com/nodiscc/toolbox/-/raw/master/DOC/SCREENSHOTS/hecat-processor-github-metadata.png)](hecat/processors/github_metadata.py)
 
-#### Exporters
+## Exporters
 
 Export data to other formats:
 - [exporters/markdown_singlepage](hecat/exporters/markdown_singlepage.py): render data as a single markdown document
@@ -101,9 +105,9 @@ steps:
       option2: some_value
 ```
 
-### Examples
+## Examples
 
-#### Awesome lists
+### Awesome lists
 
 Import data from [awesome-selfhosted](https://github.com/awesome-selfhosted/awesome-selfhosted)'s markdown list format:
 
