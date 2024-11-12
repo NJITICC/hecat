@@ -244,15 +244,15 @@ def render_markdown_list_item(software):
     """render a software project info as a markdown list item"""
     # check optional fields
     if 'demo_url' in software:
-        markdown_demo = '[Demo]({})'.format(software['demo_url'])
+        markdown_demo = '<a href="{}" target="_blank">Demo</a>'.format(software['demo_url'])
     else:
         markdown_demo = ''
     if 'source_code_url' in software and not software['source_code_url'] == software['website_url']:
-        markdown_source_code = '[Source Code]({})'.format(software['source_code_url'])
+        markdown_source_code = '<a href="{}" target="_blank">Source Code</a>'.format(software['source_code_url'])
     else:
         markdown_source_code = ''
     if 'related_software_url' in software:
-        markdown_related_software = '[Clients]({})'.format(
+        markdown_related_software = '<a href="{}" target="_blank">Clients</a>'.format(
             software['related_software_url'])
     else:
         markdown_related_software = ''
@@ -269,9 +269,9 @@ def render_markdown_list_item(software):
         software['licenses'] = []
     if 'platforms' not in software:
         software['platforms'] = []
-    markdown_list_item = '- [{}]({}) {}- {}{} {} {}\n'.format(
-        software['name'],
+    markdown_list_item = '- <a href="{}" target="_blank">{}</a> {}- {}{} {} {}\n'.format(
         software['website_url'],
+        software['name'],
         markdown_depends_3rdparty,
         software['description'],
         markdown_links,

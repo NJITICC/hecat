@@ -187,11 +187,11 @@ SOFTWARE_JINJA_MARKDOWN="""
 
 {{ software['description'] }}
 
-<span class="external-link-box"><a class="external-link" href="{{ software['website_url'] }}">{% raw %}{octicon}{% endraw %}`globe;0.8em;octicon` Website</a></span>
-{% if software['source_code_url'] is defined %}<span class="external-link-box"><a class="external-link" href="{{ software['source_code_url'] }}">{% raw %}{octicon}{% endraw %}`git-branch;0.8em;octicon` Source Code</a></span>{% endif %}
-{% if software['related_software_url'] is defined -%}<span class="external-link-box"><a class="external-link" href="{{ software['related_software_url'] }}">{% raw %}{octicon}{% endraw %}`package;0.8em;octicon` Clients</a></span>
+<span class="external-link-box"><a class="external-link" href="{{ software['website_url'] }}" target="_blank">{% raw %}{octicon}{% endraw %}`globe;0.8em;octicon` Website</a></span>
+{% if software['source_code_url'] is defined %}<span class="external-link-box"><a class="external-link" href="{{ software['source_code_url'] }}" target="_blank">{% raw %}{octicon}{% endraw %}`git-branch;0.8em;octicon` Source Code</a></span>{% endif %}
+{% if software['related_software_url'] is defined -%}<span class="external-link-box"><a class="external-link" href="{{ software['related_software_url'] }}" target="_blank">{% raw %}{octicon}{% endraw %}`package;0.8em;octicon` Clients</a></span>
 {% endif -%}
-{% if software['demo_url'] is defined -%}<span class="external-link-box"><a class="external-link" href="{{ software['demo_url'] }}">{% raw %}{octicon}{% endraw %}`play;0.8em;octicon` Demo</a></span>
+{% if software['demo_url'] is defined -%}<span class="external-link-box"><a class="external-link" href="{{ software['demo_url'] }}" target="_blank">{% raw %}{octicon}{% endraw %}`play;0.8em;octicon` Demo</a></span>
 {% endif %}
 
 {% for platform in platforms %}<span class="platform"><a href="{{ platform['href'] }}">{% raw %}{octicon}{% endraw %}`package;0.8em;octicon` {{ platform['name'] }}</a> </span> {% endfor %}
